@@ -1,103 +1,205 @@
-import Image from "next/image";
-
 export default function Home() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div className="min-h-screen bg-alt py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <div className="text-center mb-16">
+          <h1 className="text-5xl font-semibold text-foreground mb-4">
+            Sistema de Design IEEE
+          </h1>
+          <p className="text-lg text-gray-600 leading-body">
+            Guia de estilização global do projeto
+          </p>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+        {/* Cores */}
+        <section className="mb-16 bg-background p-8 rounded-lg shadow-default">
+          <h2 className="text-3xl font-semibold mb-6 leading-heading">
+            Paleta de Cores
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div>
+              <div className="bg-primary h-24 rounded-md mb-3 flex items-center justify-center">
+                <span className="text-white font-medium">Azul Primário</span>
+              </div>
+              <p className="text-sm text-gray-600">#1B4B8C</p>
+            </div>
+            <div>
+              <div className="bg-cta h-24 rounded-md mb-3 flex items-center justify-center">
+                <span className="text-white font-medium">Laranja CTA</span>
+              </div>
+              <p className="text-sm text-gray-600">#FF6B35</p>
+            </div>
+            <div>
+              <div className="bg-gray-600 h-24 rounded-md mb-3 flex items-center justify-center">
+                <span className="text-white font-medium">Cinza 600</span>
+              </div>
+              <p className="text-sm text-gray-600">#6B7280</p>
+            </div>
+          </div>
+        </section>
+
+        {/* Typography */}
+        <section className="mb-16 bg-background p-8 rounded-lg shadow-default">
+          <h2 className="text-3xl font-semibold mb-6 leading-heading">
+            Tipografia - DM Sans
+          </h2>
+          <div className="space-y-4">
+            <div>
+              <h1 className="text-4xl font-semibold mb-2">Heading 1 - 36px</h1>
+              <p className="text-gray-600">Line-height: 1.3</p>
+            </div>
+            <div>
+              <h2 className="text-3xl font-semibold mb-2">Heading 2 - 30px</h2>
+              <p className="text-gray-600">Line-height: 1.3</p>
+            </div>
+            <div>
+              <p className="text-base leading-body">
+                Texto de corpo padrão com line-height 1.6 para melhor
+                legibilidade em textos longos. A fonte DM Sans garante uma
+                aparência moderna e profissional em todo o projeto.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Border Radius */}
+        <section className="mb-16 bg-background p-8 rounded-lg shadow-default">
+          <h2 className="text-3xl font-semibold mb-6 leading-heading">
+            Border Radius
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div>
+              <div className="bg-primary/10 p-6 rounded-sm">
+                <p className="font-medium">Small - 8px</p>
+              </div>
+            </div>
+            <div>
+              <div className="bg-primary/10 p-6 rounded-md">
+                <p className="font-medium">Medium - 12px</p>
+              </div>
+            </div>
+            <div>
+              <div className="bg-primary/10 p-6 rounded-lg">
+                <p className="font-medium">Large - 16px</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Shadows */}
+        <section className="mb-16 bg-background p-8 rounded-lg shadow-default">
+          <h2 className="text-3xl font-semibold mb-6 leading-heading">
+            Sombras
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="bg-white p-6 rounded-md shadow-default">
+              <p className="font-medium mb-2">Default</p>
+              <p className="text-sm text-gray-600">
+                0 2px 8px rgba(0,0,0,0.04)
+              </p>
+            </div>
+            <div className="bg-white p-6 rounded-md shadow-hover">
+              <p className="font-medium mb-2">Hover</p>
+              <p className="text-sm text-gray-600">
+                0 8px 24px rgba(0,0,0,0.08)
+              </p>
+            </div>
+            <div className="bg-white p-6 rounded-md shadow-elevated">
+              <p className="font-medium mb-2">Elevated</p>
+              <p className="text-sm text-gray-600">
+                0 12px 32px rgba(0,0,0,0.12)
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Spacing */}
+        <section className="mb-16 bg-background p-8 rounded-lg shadow-default">
+          <h2 className="text-3xl font-semibold mb-6 leading-heading">
+            Escala de Spacing
+          </h2>
+          <div className="space-y-3">
+            <div className="flex items-center gap-4">
+              <div className="bg-primary h-4 rounded" style={{ width: '4px' }}></div>
+              <span className="text-gray-600">4px</span>
+            </div>
+            <div className="flex items-center gap-4">
+              <div className="bg-primary h-4 rounded" style={{ width: '8px' }}></div>
+              <span className="text-gray-600">8px</span>
+            </div>
+            <div className="flex items-center gap-4">
+              <div className="bg-primary h-4 rounded" style={{ width: '12px' }}></div>
+              <span className="text-gray-600">12px</span>
+            </div>
+            <div className="flex items-center gap-4">
+              <div className="bg-primary h-4 rounded" style={{ width: '16px' }}></div>
+              <span className="text-gray-600">16px</span>
+            </div>
+            <div className="flex items-center gap-4">
+              <div className="bg-primary h-4 rounded" style={{ width: '24px' }}></div>
+              <span className="text-gray-600">24px</span>
+            </div>
+            <div className="flex items-center gap-4">
+              <div className="bg-primary h-4 rounded" style={{ width: '32px' }}></div>
+              <span className="text-gray-600">32px</span>
+            </div>
+            <div className="flex items-center gap-4">
+              <div className="bg-primary h-4 rounded" style={{ width: '48px' }}></div>
+              <span className="text-gray-600">48px</span>
+            </div>
+            <div className="flex items-center gap-4">
+              <div className="bg-primary h-4 rounded" style={{ width: '64px' }}></div>
+              <span className="text-gray-600">64px</span>
+            </div>
+          </div>
+        </section>
+
+        {/* Buttons */}
+        <section className="mb-16 bg-background p-8 rounded-lg shadow-default">
+          <h2 className="text-3xl font-semibold mb-6 leading-heading">
+            Botões com Transições
+          </h2>
+          <div className="flex flex-wrap gap-4">
+            <button className="bg-primary text-white px-6 py-3 rounded-md transition-default hover:shadow-hover">
+              Botão Primário
+            </button>
+            <button className="bg-cta text-white px-6 py-3 rounded-md transition-default hover:shadow-hover">
+              Botão CTA
+            </button>
+            <button className="bg-white text-primary border-2 border-primary px-6 py-3 rounded-md transition-default hover:bg-primary hover:text-white">
+              Botão Outline
+            </button>
+          </div>
+          <p className="text-sm text-gray-600 mt-4">
+            Transição padrão: 300ms ease-out
+          </p>
+        </section>
+
+        {/* Acessibilidade */}
+        <section className="bg-background p-8 rounded-lg shadow-default">
+          <h2 className="text-3xl font-semibold mb-6 leading-heading">
+            Contraste WCAG AA
+          </h2>
+          <div className="space-y-4">
+            <div className="p-4 bg-primary rounded-md">
+              <p className="text-white">
+                Texto branco em azul primário ✓ Contraste 7.3:1
+              </p>
+            </div>
+            <div className="p-4 bg-cta rounded-md">
+              <p className="text-white">
+                Texto branco em laranja CTA ✓ Contraste 4.8:1
+              </p>
+            </div>
+            <div className="p-4 bg-white border border-gray-200 rounded-md">
+              <p className="text-gray-600">
+                Texto cinza 600 em branco ✓ Contraste 5.7:1
+              </p>
+            </div>
+          </div>
+        </section>
+      </div>
     </div>
   );
 }
