@@ -1,103 +1,115 @@
-import Image from "next/image";
+'use client';
+
+import { CommentSection } from '@/components/CommentSection';
+import { CommentData } from '@/components/Comment';
+import { useState } from 'react';
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [comments, setComments] = useState<CommentData[]>([
+    {
+      id: '1',
+      author: {
+        name: 'Ana Silva',
+        avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop',
+        isAdmin: true,
+      },
+      content:
+        'Que evento incrível! Estou muito animada para participar do workshop de IA. Será uma ótima oportunidade para aprender novas técnicas e aplicá-las em projetos reais.',
+      timestamp: 'há 2 horas',
+      canEdit: true,
+      canDelete: true,
+    },
+    {
+      id: '2',
+      author: {
+        name: 'João Pedro',
+        avatar: 'https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=100&h=100&fit=crop',
+        isAdmin: false,
+      },
+      content:
+        'Concordo! Já participei de outros eventos do IEEE e sempre foram excelentes. A qualidade dos palestrantes é sempre muito alta.',
+      timestamp: 'há 1 hora',
+      canEdit: false,
+      canDelete: false,
+    },
+    {
+      id: '3',
+      author: {
+        name: 'Maria Costa',
+        avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop',
+        isAdmin: false,
+      },
+      content:
+        'Alguém sabe se haverá certificado de participação? Gostaria de adicionar ao meu currículo.',
+      timestamp: 'há 30 minutos',
+      canEdit: false,
+      canDelete: false,
+    },
+  ]);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const currentUser = {
+    name: 'Você',
+    avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop',
+    isAuthenticated: true,
+  };
+
+  const handleAddComment = (content: string) => {
+    const newComment: CommentData = {
+      id: Date.now().toString(),
+      author: {
+        name: currentUser.name,
+        avatar: currentUser.avatar,
+        isAdmin: false,
+      },
+      content,
+      timestamp: 'agora',
+      canEdit: false,
+      canDelete: false,
+    };
+    setComments([...comments, newComment]);
+  };
+
+  const handleEditComment = (commentId: string) => {
+    console.log('Editar comentário:', commentId);
+    alert(`Funcionalidade de edição para o comentário ${commentId}`);
+  };
+
+  const handleDeleteComment = (commentId: string) => {
+    if (confirm('Tem certeza que deseja eliminar este comentário?')) {
+      setComments(comments.filter((c) => c.id !== commentId));
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto">
+        <div className="bg-white rounded-2xl shadow-sm p-8">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            Workshop de Inteligência Artificial Aplicada
+          </h1>
+          <p className="text-gray-600 mb-8">
+            15 de Dezembro, 2025 • Laboratório de Computação - Bloco A
+          </p>
+
+          <div className="prose max-w-none mb-12">
+            <p className="text-gray-700 leading-relaxed">
+              Aprenda a aplicar técnicas de IA em projetos reais. Neste
+              workshop, você vai aprender sobre redes neurais, machine learning
+              e deep learning com exemplos práticos e hands-on. Uma experiência
+              única para desenvolvedores e estudantes interessados em
+              inteligência artificial.
+            </p>
+          </div>
+
+          <CommentSection
+            comments={comments}
+            currentUser={currentUser}
+            onAddComment={handleAddComment}
+            onEditComment={handleEditComment}
+            onDeleteComment={handleDeleteComment}
+          />
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </div>
     </div>
   );
 }
