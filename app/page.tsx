@@ -1,103 +1,140 @@
-import Image from "next/image";
+'use client';
+
+import { useState } from 'react';
+import { FiltersPopover, DateFilter, CategoryFilter } from '@/components/FiltersPopover';
+import { EventCard } from '@/components/EventCard';
+
+// Dados de exemplo
+const sampleEvents = [
+  {
+    id: 1,
+    image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800',
+    category: 'Workshop' as CategoryFilter,
+    title: 'Workshop de Robótica Avançada',
+    date: '2024-03-15',
+    location: 'Laboratório 3',
+    participants: 45,
+    isClosed: false,
+    description: 'Aprenda técnicas avançadas de programação para robôs autônomos e sistemas embarcados.',
+  },
+  {
+    id: 2,
+    image: 'https://images.unsplash.com/photo-1591115765373-5207764f72e7?w=800',
+    category: 'Conferência' as CategoryFilter,
+    title: 'Conferência IEEE 2024',
+    date: '2024-04-20',
+    location: 'Auditório Principal',
+    participants: 200,
+    isClosed: false,
+    description: 'O maior evento de tecnologia do ano com palestrantes internacionais renomados.',
+  },
+  {
+    id: 3,
+    image: 'https://images.unsplash.com/photo-1528605248644-14dd04022da1?w=800',
+    category: 'Networking' as CategoryFilter,
+    title: 'Meetup Mensal IEEE',
+    date: '2024-02-10',
+    location: 'Sala de Eventos',
+    participants: 80,
+    isClosed: true,
+    description: 'Encontro para networking e troca de experiências entre profissionais e estudantes.',
+  },
+  {
+    id: 4,
+    image: 'https://images.unsplash.com/photo-1511578314322-379afb476865?w=800',
+    category: 'Cultural' as CategoryFilter,
+    title: 'Noite de Inovação',
+    date: '2024-05-10',
+    location: 'Campus Central',
+    participants: 120,
+    isClosed: false,
+    description: 'Uma celebração da cultura maker com demonstrações de projetos inovadores.',
+  },
+  {
+    id: 5,
+    image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800',
+    category: 'Workshop' as CategoryFilter,
+    title: 'Introdução ao Machine Learning',
+    date: '2024-01-25',
+    location: 'Lab de Computação',
+    participants: 35,
+    isClosed: true,
+    description: 'Workshop prático sobre algoritmos de aprendizado de máquina e suas aplicações.',
+  },
+  {
+    id: 6,
+    image: 'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=800',
+    category: 'Conferência' as CategoryFilter,
+    title: 'Summit de IoT',
+    date: '2024-06-15',
+    location: 'Centro de Convenções',
+    participants: 150,
+    isClosed: false,
+    description: 'Explorando o futuro da Internet das Coisas com especialistas da indústria.',
+  },
+];
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [dateFilter, setDateFilter] = useState<DateFilter>('todos');
+  const [categoryFilters, setCategoryFilters] = useState<CategoryFilter[]>([]);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const filteredEvents = sampleEvents.filter((event) => {
+    const eventDate = new Date(event.date);
+    eventDate.setHours(0, 0, 0, 0);
+
+    // Filtro de data
+    let dateMatch = true;
+    if (dateFilter === 'proximos') {
+      dateMatch = eventDate >= today && !event.isClosed;
+    } else if (dateFilter === 'passados') {
+      dateMatch = eventDate < today || event.isClosed;
+    }
+
+    // Filtro de categoria
+    const categoryMatch =
+      categoryFilters.length === 0 || categoryFilters.includes(event.category);
+
+    return dateMatch && categoryMatch;
+  });
+
+  return (
+    <div className="min-h-screen bg-gray-50 py-12 px-4">
+      <div className="max-w-7xl mx-auto">
+        {/* Header com Filtros */}
+        <div className="mb-8 flex items-center justify-between">
+          <div>
+            <h1 className="text-4xl font-bold text-gray-900 mb-2">Eventos IEEE</h1>
+            <p className="text-gray-600">
+              {filteredEvents.length} evento{filteredEvents.length !== 1 ? 's' : ''} encontrado
+              {filteredEvents.length !== 1 ? 's' : ''}
+            </p>
+          </div>
+          <FiltersPopover
+            onFiltersChange={(filters) => {
+              setDateFilter(filters.date);
+              setCategoryFilters(filters.categories);
+            }}
+          />
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+        {/* Grid de Eventos */}
+        {filteredEvents.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredEvents.map((event) => (
+              <EventCard key={event.id} {...event} />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-16">
+            <p className="text-gray-500 text-lg">
+              Nenhum evento encontrado com os filtros selecionados.
+            </p>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
