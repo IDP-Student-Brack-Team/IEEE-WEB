@@ -93,7 +93,7 @@ export function InteractiveCircuitHero() {
         <div className="max-w-5xl pointer-events-auto text-center md:text-left">
           {/* Expressive Header - Masked Wave Animation */}
           <div className="mb-4 md:mb-8">
-            <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-7xl font-normal tracking-tight leading-tight text-white">
+            <h1 className="text-5xl sm:text-5xl md:text-6xl lg:text-7xl font-normal tracking-tight leading-tight text-white">
               <MaskedWaveText text="Descobre e" delay={0.1} /> <br/>
               <span className="text-primary inline-block">
                  <MaskedWaveText text="Participa" delay={0.3} />
@@ -105,13 +105,13 @@ export function InteractiveCircuitHero() {
             Conecta com uma comunidade de aprendizado dedicada. Explora eventos que ampliam horizontes e criam conexões significativas.
           </p>
 
-          <div ref={ctaRef} className="flex flex-col sm:flex-row flex-wrap gap-3 md:gap-6 items-center justify-center md:justify-start">
-            <Link href="/events" className="w-full sm:w-auto">
-              <Button className="w-full sm:w-auto h-10 md:h-12 lg:h-14 px-5 md:px-6 text-sm md:text-base lg:text-lg font-medium rounded-full shadow-lg hover:shadow-xl transition-all hover:-translate-y-1 bg-primary text-primary-foreground hover:bg-primary/90">
+          <div ref={ctaRef} className="flex flex-row flex-wrap gap-3 md:gap-6 items-center justify-center md:justify-start">
+            <Link href="/events">
+              <Button className="h-10 md:h-12 lg:h-14 px-5 md:px-6 text-sm md:text-base lg:text-lg font-medium rounded-full shadow-lg hover:shadow-xl transition-all hover:-translate-y-1 bg-primary text-primary-foreground hover:bg-primary/90">
                 Explorar Eventos <ArrowRight className="ml-2 w-3.5 h-3.5 md:w-4 md:h-4 lg:w-5 lg:h-5" />
               </Button>
             </Link>
-            <Button variant="outline" className="w-full sm:w-auto h-10 md:h-12 lg:h-14 px-5 md:px-6 text-sm md:text-base lg:text-lg font-medium rounded-full border-2 border-white/20 text-white hover:bg-white/10 hover:text-white transition-colors bg-transparent">
+            <Button variant="outline" className="h-10 md:h-12 lg:h-14 px-5 md:px-6 text-sm md:text-base lg:text-lg font-medium rounded-full border-2 border-white/20 text-white hover:bg-white/10 hover:text-white transition-colors bg-transparent">
               Saber Mais
             </Button>
           </div>
