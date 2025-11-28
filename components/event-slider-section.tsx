@@ -104,16 +104,16 @@ export function EventSliderSection({ events }: EventSliderSectionProps) {
         ))}
 
         {/* Content Overlay */}
-        <div className="absolute inset-0 py-16 md:py-24 text-white pointer-events-none">
-          <div className="container mx-auto px-6 h-full flex flex-col justify-between">
-            
+        <div className="absolute inset-0 py-8 md:py-16 lg:py-24 text-white pointer-events-none">
+          <div className="container mx-auto px-4 md:px-6 h-full flex flex-col justify-between">
+
             {/* Header (Top) */}
             <div className="relative z-20 pointer-events-auto">
               <AnimatedText delay={0.2}>
-                <h2 className="text-3xl md:text-4xl font-bold mb-2 tracking-tight">Eventos em Destaque</h2>
+                <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-2 tracking-tight">Eventos em Destaque</h2>
               </AnimatedText>
               <AnimatedText delay={0.3}>
-                <p className="text-white/80 text-lg max-w-xl">
+                <p className="text-white/80 text-sm md:text-base lg:text-lg max-w-xl">
                   Descubra as experiências mais incríveis da nossa comunidade.
                 </p>
               </AnimatedText>
@@ -121,52 +121,53 @@ export function EventSliderSection({ events }: EventSliderSectionProps) {
 
             {/* Event Info (Bottom) */}
             <div key={currentEvent.id} className="relative z-20 max-w-4xl mt-auto pointer-events-auto">
-              <div className="flex flex-col gap-6">
+              <div className="flex flex-col gap-4 md:gap-6">
                 {/* Meta Tags */}
-                <div className="flex flex-wrap gap-4 text-sm font-medium text-white/90 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-100 fill-mode-forwards">
-                  <span className="flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full border border-white/10">
-                    <Calendar className="w-4 h-4 text-primary" />
-                    {new Date(currentEvent.date).toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' })}
+                <div className="flex flex-wrap gap-2 md:gap-4 text-xs md:text-sm font-medium text-white/90 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-100 fill-mode-forwards">
+                  <span className="flex items-center gap-1.5 md:gap-2 bg-white/10 backdrop-blur-md px-3 md:px-4 py-1.5 md:py-2 rounded-full border border-white/10">
+                    <Calendar className="w-3 h-3 md:w-4 md:h-4 text-primary" />
+                    <span className="hidden sm:inline">{new Date(currentEvent.date).toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
+                    <span className="sm:hidden">{new Date(currentEvent.date).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' })}</span>
                   </span>
-                  <span className="flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full border border-white/10">
-                    <MapPin className="w-4 h-4 text-primary" />
-                    {currentEvent.location}
+                  <span className="flex items-center gap-1.5 md:gap-2 bg-white/10 backdrop-blur-md px-3 md:px-4 py-1.5 md:py-2 rounded-full border border-white/10">
+                    <MapPin className="w-3 h-3 md:w-4 md:h-4 text-primary" />
+                    <span className="truncate max-w-[120px] md:max-w-none">{currentEvent.location}</span>
                   </span>
                 </div>
 
                 {/* Title & Desc */}
-                <div className="space-y-4">
-                  <div className="text-4xl md:text-6xl font-bold leading-tight">
+                <div className="space-y-2 md:space-y-4">
+                  <div className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-bold leading-tight">
                     <MaskedWaveText text={currentEvent.title} delay={0.2} />
                   </div>
-                  <div className="text-lg md:text-xl text-white/80 max-w-2xl line-clamp-2">
+                  <div className="text-sm sm:text-base md:text-lg lg:text-xl text-white/80 max-w-2xl line-clamp-2">
                      <MaskedWaveText text={currentEvent.description} delay={0.4} stagger={0.01} />
                   </div>
                 </div>
 
                 {/* Actions */}
-                <div className="flex flex-wrap gap-4 pt-4 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-500 fill-mode-forwards">
-                  <Link href={`/events/${currentEvent.id}`}>
-                    <Button size="lg" className="h-14 px-8 text-lg rounded-full bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg hover:shadow-primary/25">
+                <div className="flex flex-col sm:flex-row flex-wrap gap-3 md:gap-4 pt-2 md:pt-4 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-500 fill-mode-forwards">
+                  <Link href={`/events/${currentEvent.id}`} className="w-full sm:w-auto">
+                    <Button size="lg" className="w-full sm:w-auto h-11 md:h-14 px-6 md:px-8 text-base md:text-lg rounded-full bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg hover:shadow-primary/25">
                       Ver Detalhes
                     </Button>
                   </Link>
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 justify-center sm:justify-start">
                     <Button
                       onClick={goToPrev}
                       size="icon"
                       variant="outline"
-                      className="h-14 w-14 rounded-full border-white/20 bg-black/20 text-white hover:bg-white/20 backdrop-blur-sm"
+                      className="h-11 w-11 md:h-14 md:w-14 rounded-full border-white/20 bg-black/20 text-white hover:bg-white/20 backdrop-blur-sm"
                     >
-                      <ChevronLeft className="h-6 w-6" />
+                      <ChevronLeft className="h-5 w-5 md:h-6 md:w-6" />
                     </Button>
                     <Button
                       onClick={goToNext}
                       size="icon"
                       variant="outline"
-                      className="h-14 w-14 rounded-full border-white/20 bg-black/20 text-white hover:bg-white/20 backdrop-blur-sm"
+                      className="h-11 w-11 md:h-14 md:w-14 rounded-full border-white/20 bg-black/20 text-white hover:bg-white/20 backdrop-blur-sm"
                     >
-                      <ChevronRight className="h-6 w-6" />
+                      <ChevronRight className="h-5 w-5 md:h-6 md:w-6" />
                     </Button>
                   </div>
                 </div>

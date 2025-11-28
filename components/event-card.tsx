@@ -55,19 +55,19 @@ export function EventCard({ event }: EventCardProps) {
           )}
         </div>
 
-        <CardContent className="p-6 flex-1 flex flex-col">
-          <h3 className="text-lg md:text-xl font-bold leading-tight mb-3 line-clamp-2 group-hover:text-primary transition-colors duration-300">
+        <CardContent className="p-4 md:p-6 flex-1 flex flex-col">
+          <h3 className="text-base md:text-lg lg:text-xl font-bold leading-tight mb-2 md:mb-3 line-clamp-2 group-hover:text-primary transition-colors duration-300">
             {event.title}
           </h3>
 
-          <p className="text-sm text-muted-foreground mb-6 line-clamp-2 leading-relaxed">{event.description}</p>
+          <p className="text-xs md:text-sm text-muted-foreground mb-4 md:mb-6 line-clamp-2 leading-relaxed">{event.description}</p>
 
-          <div className="space-y-3 mt-auto">
-            <div className="flex items-start gap-3">
-              <Calendar className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
+          <div className="space-y-2 md:space-y-3 mt-auto">
+            <div className="flex items-start gap-2 md:gap-3">
+              <Calendar className="h-3.5 w-3.5 md:h-4 md:w-4 text-primary flex-shrink-0 mt-0.5" />
               <div className="flex-1">
-                <p className="metadata-mono text-foreground/60 text-xs mb-0.5">Data</p>
-                <p className="text-sm font-medium">
+                <p className="metadata-mono text-foreground/60 text-[10px] md:text-xs mb-0.5">Data</p>
+                <p className="text-xs md:text-sm font-medium">
                   {new Date(event.date).toLocaleDateString("pt-BR", {
                     day: "numeric",
                     month: "long",
@@ -76,19 +76,19 @@ export function EventCard({ event }: EventCardProps) {
                 </p>
               </div>
             </div>
-            <div className="flex items-start gap-3">
-              <MapPin className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
+            <div className="flex items-start gap-2 md:gap-3">
+              <MapPin className="h-3.5 w-3.5 md:h-4 md:w-4 text-primary flex-shrink-0 mt-0.5" />
               <div className="flex-1">
-                <p className="metadata-mono text-foreground/60 text-xs mb-0.5">Local</p>
-                <p className="text-sm font-medium line-clamp-1">{event.location}</p>
+                <p className="metadata-mono text-foreground/60 text-[10px] md:text-xs mb-0.5">Local</p>
+                <p className="text-xs md:text-sm font-medium line-clamp-1">{event.location}</p>
               </div>
             </div>
           </div>
         </CardContent>
 
-        <CardFooter className="px-6 pb-6 pt-4 border-t border-border/20 flex flex-col gap-4">
-          <div className="flex items-center gap-2 text-sm">
-            <Users className="h-4 w-4 text-primary" />
+        <CardFooter className="px-4 md:px-6 pb-4 md:pb-6 pt-3 md:pt-4 border-t border-border/20 flex flex-col gap-3 md:gap-4">
+          <div className="flex items-center gap-2 text-xs md:text-sm">
+            <Users className="h-3.5 w-3.5 md:h-4 md:w-4 text-primary" />
             <span className="text-muted-foreground">
               <span className="font-semibold text-foreground">{event.attendees}</span> de{" "}
               <span className="font-semibold text-foreground">{event.maxAttendees}</span> inscritos
@@ -97,7 +97,7 @@ export function EventCard({ event }: EventCardProps) {
 
           <Button
             size="sm"
-            className="w-full h-10 font-medium uppercase tracking-wide border-0 hover:bg-primary hover:text-primary-foreground transition-all duration-300 bg-transparent text-primary rounded-sm"
+            className="w-full h-9 md:h-10 text-xs md:text-sm font-medium uppercase tracking-wide border-0 hover:bg-primary hover:text-primary-foreground transition-all duration-300 bg-transparent text-primary rounded-sm"
             variant="outline"
           >
             Conhecer Mais

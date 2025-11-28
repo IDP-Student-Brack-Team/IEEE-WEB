@@ -3,9 +3,9 @@ import { Facebook, Twitter, Instagram, Linkedin, Mail, MapPin, Phone } from "luc
 
 export function Footer() {
   return (
-    <footer className="bg-surface-container-low border-t border-border/20 mt-20">
-      <div className="max-w-7xl mx-auto px-6 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+    <footer className="bg-surface-container-low border-t border-border/20 mt-12 md:mt-20">
+      <div className="max-w-7xl mx-auto px-4 md:px-6 py-10 md:py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
           {/* Brand Section */}
           <div className="space-y-4">
             <div className="flex items-center gap-3">
@@ -121,16 +121,16 @@ export function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-12 pt-8 border-t border-border/20 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-sm text-muted-foreground">© 2025 Eventos Comunitários. Todos os direitos reservados.</p>
-          <div className="flex items-center gap-6">
-            <Link href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+        <div className="mt-8 md:mt-12 pt-6 md:pt-8 border-t border-border/20 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-xs md:text-sm text-muted-foreground text-center md:text-left">© 2025 Eventos Comunitários. Todos os direitos reservados.</p>
+          <div className="flex items-center gap-4 md:gap-6">
+            <Link href="#" className="text-xs md:text-sm text-muted-foreground hover:text-primary transition-colors">
               Cookies
             </Link>
-            <Link href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+            <Link href="#" className="text-xs md:text-sm text-muted-foreground hover:text-primary transition-colors">
               Privacidade
             </Link>
-            <Link href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+            <Link href="#" className="text-xs md:text-sm text-muted-foreground hover:text-primary transition-colors">
               Termos
             </Link>
           </div>

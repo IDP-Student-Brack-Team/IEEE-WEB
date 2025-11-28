@@ -100,26 +100,26 @@ export default function EventsPage() {
       <Navbar />
 
       {/* Events Listing Section */}
-      <section className="pt-32 pb-20">
-        <div className="container mx-auto px-6">
-          <div className="mb-16 animate-in fade-in slide-in-from-bottom-8 duration-700 fill-mode-forwards">
-            <h2 className="text-4xl md:text-5xl font-bold tracking-tight leading-tight mb-4">Eventos IEEE</h2>
-            <p className="text-lg md:text-xl text-muted-foreground font-light max-w-2xl leading-relaxed">
+      <section className="pt-24 md:pt-32 pb-12 md:pb-20">
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="mb-10 md:mb-16 animate-in fade-in slide-in-from-bottom-8 duration-700 fill-mode-forwards">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-tight mb-3 md:mb-4">Eventos IEEE</h2>
+            <p className="text-base sm:text-lg md:text-xl text-muted-foreground font-light max-w-2xl leading-relaxed">
               Conhece e fala sobre os eventos disponíveis. Explora oportunidades de crescimento académico e
               profissional.
             </p>
           </div>
 
-          <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4 mb-8">
+          <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3 md:gap-4 mb-6 md:mb-8">
             {/* Search Bar */}
             <div className="relative flex-1 max-w-xl">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+              <Search className="absolute left-3 md:left-4 top-1/2 -translate-y-1/2 h-4 w-4 md:h-5 md:w-5 text-muted-foreground" />
               <Input
                 type="text"
-                placeholder="Pesquisar eventos por título, descrição ou local..."
+                placeholder="Pesquisar eventos..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-12 pr-10 h-12 text-base bg-white border-2 border-primary/20 rounded-lg-custom focus:border-primary"
+                className="pl-10 md:pl-12 pr-10 h-11 md:h-12 text-sm md:text-base bg-white border-2 border-primary/20 rounded-lg-custom focus:border-primary"
               />
               {searchQuery && (
                 <button
@@ -131,18 +131,18 @@ export default function EventsPage() {
               )}
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 md:gap-3">
               {/* Date Range Filter */}
               <Popover>
                 <PopoverTrigger asChild>
                   <Button
                     variant="outline"
                     className={cn(
-                      "h-12 px-4 rounded-lg-custom border-2 font-medium gap-2",
+                      "h-11 md:h-12 px-3 md:px-4 rounded-lg-custom border-2 font-medium gap-2 text-sm md:text-base",
                       dateRange.from || dateRange.to ? "border-primary bg-primary/5" : "border-primary/20",
                     )}
                   >
-                    <CalendarIcon className="h-5 w-5" />
+                    <CalendarIcon className="h-4 w-4 md:h-5 md:w-5" />
                     <span className="hidden sm:inline">
                       {dateRange.from ? (
                         dateRange.to ? (
@@ -185,11 +185,11 @@ export default function EventsPage() {
                   <Button
                     variant="outline"
                     className={cn(
-                      "h-12 px-4 rounded-lg-custom border-2 font-medium gap-2 relative",
+                      "h-11 md:h-12 px-3 md:px-4 rounded-lg-custom border-2 font-medium gap-2 relative text-sm md:text-base",
                       activeFiltersCount > 0 ? "border-primary bg-primary/5" : "border-primary/20",
                     )}
                   >
-                    <SlidersHorizontal className="h-5 w-5" />
+                    <SlidersHorizontal className="h-4 w-4 md:h-5 md:w-5" />
                     <span className="hidden sm:inline">Filtros</span>
                     {activeFiltersCount > 0 && (
                       <Badge className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs bg-primary text-primary-foreground border-0">
@@ -344,13 +344,13 @@ export default function EventsPage() {
           </div>
 
           {isLoading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8 lg:gap-10">
               {[1, 2, 3, 4, 5, 6].map((i) => (
                 <div key={i} className="h-96 bg-surface-container-low animate-pulse rounded-xl-custom" />
               ))}
             </div>
           ) : filteredEvents.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8 lg:gap-10">
               {filteredEvents.map((event, index) => (
                 <div
                   key={event.id}
