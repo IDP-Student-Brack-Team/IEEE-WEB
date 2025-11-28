@@ -45,14 +45,14 @@ export default function HomePage() {
       </div>
 
       {/* Community Stats Section */}
-      <section className="parallax-section py-12 md:py-16 px-4 md:px-10 relative z-10">
+      <section className="parallax-section py-10 md:py-16 px-4 md:px-10 relative z-10">
         <div className="max-w-7xl mx-auto">
           <AnimatedText delay={0.2}>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-10 md:mb-16 text-center">Nossa Comunidade</h2>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-8 md:mb-12 lg:mb-16 text-center">Nossa Comunidade</h2>
           </AnimatedText>
 
           <AnimatedGroup stagger={0.1} delay={0.3}>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 lg:gap-8">
               {[
                 { label: "Membros Ativos", value: "45.2K" },
                 { label: "Eventos Anuais", value: "240+" },
@@ -61,8 +61,8 @@ export default function HomePage() {
               ].map((stat, i) => (
                 <div key={i} className="animate-item overflow-hidden">
                   <div className="text-center">
-                    <div className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-primary mb-2">{stat.value}</div>
-                    <p className="text-xs sm:text-sm md:text-base text-muted-foreground font-medium">{stat.label}</p>
+                    <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-primary mb-1 md:mb-2">{stat.value}</div>
+                    <p className="text-[10px] sm:text-xs md:text-sm lg:text-base text-muted-foreground font-medium leading-tight">{stat.label}</p>
                   </div>
                 </div>
               ))}
