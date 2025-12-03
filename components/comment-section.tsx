@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import type { Comment, User } from "@/lib/types"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import { useToast } from "@/hooks/use-toast"
 import { EmptyState } from "@/components/empty-state"
+import { api } from "@/lib/api"
 
 interface CommentSectionProps {
   eventId: string
@@ -33,9 +34,34 @@ export function CommentSection({ eventId, comments: initialComments, currentUser
   const [editingId, setEditingId] = useState<string | null>(null)
   const [editContent, setEditContent] = useState("")
   const [deleteId, setDeleteId] = useState<string | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
   const { toast } = useToast()
 
-  const handleAddComment = () => {
+  // Recarregar comentários
+  const refreshComments = async () => {
+    try {
+      const commentsData = await api.getEventComments(eventId)
+      const mappedComments = commentsData.map((c: any) => ({
+        ...c,
+        userId: c.authorId,
+        userName: c.author?.name || "Usuário",
+        userAvatar: c.author?.avatarUrl || "/placeholder.svg",
+        timestamp: c.createdAt,
+        isAdmin: c.author?.role === "ADMIN",
+      }))
+      setComments(mappedComments)
+    } catch (error) {
+      console.error("Error refreshing comments:", error)
+    }
+  }
+
+  // Recarregar comentários quando o componente monta
+  useEffect(() => {
+    refreshComments()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [eventId])
+
+  const handleAddComment = async () => {
     if (!currentUser) {
       toast({
         title: "Faça login",
@@ -45,23 +71,25 @@ export function CommentSection({ eventId, comments: initialComments, currentUser
       return
     }
 
-    if (newComment.trim()) {
-      const comment: Comment = {
-        id: `c${Date.now()}`,
-        eventId,
-        userId: currentUser.id,
-        userName: currentUser.name,
-        userAvatar: currentUser.avatar,
-        content: newComment,
-        timestamp: new Date().toISOString(),
-        isAdmin: currentUser.isAdmin,
-      }
-      setComments([...comments, comment])
+    if (!newComment.trim()) return
+
+    setIsLoading(true)
+    try {
+      await api.createComment(eventId, newComment.trim())
       setNewComment("")
+      await refreshComments()
       toast({
         title: "Comentário publicado",
         description: "Seu comentário foi adicionado com sucesso",
       })
+    } catch (error: any) {
+      toast({
+        title: "Erro",
+        description: error.message || "Não foi possível publicar o comentário",
+        variant: "destructive",
+      })
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -73,26 +101,50 @@ export function CommentSection({ eventId, comments: initialComments, currentUser
     }
   }
 
-  const handleSaveEdit = () => {
-    if (editContent.trim()) {
-      setComments(comments.map((c) => (c.id === editingId ? { ...c, content: editContent } : c)))
+  const handleSaveEdit = async () => {
+    if (!editContent.trim() || !editingId) return
+
+    setIsLoading(true)
+    try {
+      await api.updateComment(editingId, editContent.trim())
       setEditingId(null)
       setEditContent("")
+      await refreshComments()
       toast({
         title: "Comentário atualizado",
         description: "Seu comentário foi editado com sucesso",
       })
+    } catch (error: any) {
+      toast({
+        title: "Erro",
+        description: error.message || "Não foi possível atualizar o comentário",
+        variant: "destructive",
+      })
+    } finally {
+      setIsLoading(false)
     }
   }
 
-  const handleDeleteComment = () => {
-    if (deleteId) {
-      setComments(comments.filter((c) => c.id !== deleteId))
+  const handleDeleteComment = async () => {
+    if (!deleteId) return
+
+    setIsLoading(true)
+    try {
+      await api.deleteComment(deleteId)
       setDeleteId(null)
+      await refreshComments()
       toast({
         title: "Comentário excluído",
         description: "O comentário foi excluído com sucesso",
       })
+    } catch (error: any) {
+      toast({
+        title: "Erro",
+        description: error.message || "Não foi possível excluir o comentário",
+        variant: "destructive",
+      })
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -135,10 +187,10 @@ export function CommentSection({ eventId, comments: initialComments, currentUser
               <div className="flex justify-end">
                 <Button
                   onClick={handleAddComment}
-                  disabled={!newComment.trim()}
+                  disabled={!newComment.trim() || isLoading}
                   className="rounded-xs font-semibold uppercase tracking-wide h-10"
                 >
-                  Publicar
+                  {isLoading ? "Publicando..." : "Publicar"}
                 </Button>
               </div>
             </div>
@@ -186,13 +238,22 @@ export function CommentSection({ eventId, comments: initialComments, currentUser
                         className="min-h-[80px] resize-none font-sans rounded-xs border border-border/30"
                       />
                       <div className="flex gap-2">
-                        <Button size="sm" onClick={handleSaveEdit} className="h-8 rounded-xs font-medium">
-                          Guardar
+                        <Button 
+                          size="sm" 
+                          onClick={handleSaveEdit} 
+                          disabled={isLoading}
+                          className="h-8 rounded-xs font-medium"
+                        >
+                          {isLoading ? "Salvando..." : "Guardar"}
                         </Button>
                         <Button
                           size="sm"
                           variant="outline"
-                          onClick={() => setEditingId(null)}
+                          onClick={() => {
+                            setEditingId(null)
+                            setEditContent("")
+                          }}
+                          disabled={isLoading}
                           className="h-8 rounded-xs"
                         >
                           Cancelar
