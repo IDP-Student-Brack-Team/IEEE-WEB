@@ -10,7 +10,7 @@ export function normalizeEvent(event: any): Event {
     coverImage: event.bannerUrl || event.images?.[0]?.url || event.coverImage || "/placeholder.svg?height=400&width=800",
     gallery: event.images?.map((img: any) => img.url) || event.gallery || [],
     organizer: event.createdBy?.name || event.organizer || "IEEE",
-    attendees: event.registrations?.length || event.attendees || 0,
+    attendees: event._count?.registrations || event.registrations?.length || event.attendees || 0,
     maxAttendees: event.maxParticipants || event.maxAttendees || 100,
     longDescription: event.description || event.longDescription || event.shortDescription || "",
     description: event.shortDescription || event.description?.substring(0, 150) || "",
