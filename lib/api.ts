@@ -43,11 +43,21 @@ class ApiClient {
     })
 
     if (!response.ok) {
-      const error: ApiError = await response.json().catch(() => ({
-        message: "Error en la solicitud",
-        statusCode: response.status,
-      }))
-      throw new Error(error.message || `HTTP error ${response.status}`)
+      const errorData = await response.json().catch(() => ({}))
+      
+      // NestJS validation errors têm uma estrutura específica
+      if (errorData.message && Array.isArray(errorData.message)) {
+        const validationMessages = errorData.message.map((msg: any) => {
+          if (typeof msg === 'string') return msg
+          if (msg.constraints) {
+            return Object.values(msg.constraints).join(', ')
+          }
+          return JSON.stringify(msg)
+        }).join('; ')
+        throw new Error(validationMessages)
+      }
+      
+      throw new Error(errorData.message || errorData.error || `HTTP error ${response.status}`)
     }
 
     return response.json()
