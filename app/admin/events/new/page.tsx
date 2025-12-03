@@ -47,21 +47,59 @@ export default function NewEventPage() {
         uploadedBannerUrl = uploadResult.url
       }
 
-      await api.createEvent({
-        ...formData,
-        bannerUrl: uploadedBannerUrl,
-        maxParticipants: formData.maxParticipants ? parseInt(formData.maxParticipants) : undefined,
-      })
+      // Converter datas do formato datetime-local para ISO 8601
+      const formatDateForAPI = (dateString: string): string | undefined => {
+        if (!dateString || dateString.trim() === '') return undefined
+        // datetime-local retorna "YYYY-MM-DDTHH:mm", precisamos converter para ISO
+        const date = new Date(dateString)
+        if (isNaN(date.getTime())) return undefined
+        return date.toISOString()
+      }
+
+      // Preparar dados para envio, removendo campos vazios
+      const eventData: any = {
+        title: formData.title.trim(),
+        description: formData.description.trim(),
+        location: formData.location.trim(),
+        category: formData.category,
+        startDate: formatDateForAPI(formData.startDate)!,
+        status: formData.status,
+      }
+
+      // Adicionar campos opcionais apenas se tiverem valor
+      if (formData.shortDescription?.trim()) {
+        eventData.shortDescription = formData.shortDescription.trim()
+      }
+      
+      if (uploadedBannerUrl) {
+        eventData.bannerUrl = uploadedBannerUrl
+      }
+      
+      if (formData.endDate) {
+        const endDate = formatDateForAPI(formData.endDate)
+        if (endDate) eventData.endDate = endDate
+      }
+      
+      if (formData.maxParticipants && formData.maxParticipants.trim() !== '') {
+        const maxParticipants = parseInt(formData.maxParticipants)
+        if (!isNaN(maxParticipants) && maxParticipants > 0) {
+          eventData.maxParticipants = maxParticipants
+        }
+      }
+
+      await api.createEvent(eventData)
 
       toast({
         title: "Evento criado",
         description: "O evento foi publicado com sucesso.",
       })
       router.push("/admin")
-    } catch (error) {
+    } catch (error: any) {
+      console.error("Erro ao criar evento:", error)
+      const errorMessage = error?.message || "Não foi possível criar o evento. Verifique se todos os campos obrigatórios estão preenchidos."
       toast({
         title: "Erro",
-        description: "Não foi possível criar o evento.",
+        description: errorMessage,
         variant: "destructive",
       })
     } finally {
