@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, use } from "react"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { EventDetailClient } from "@/components/event-detail-client"
@@ -12,38 +12,53 @@ import type { Event, Comment } from "@/lib/types"
 export default function EventDetailPage({
   params,
 }: {
-  params: { id: string }
+  params: Promise<{ id: string }>
 }) {
-  const { id } = params
+  const { id } = use(params)
   const { user } = useAuth()
   const [event, setEvent] = useState<Event | null>(null)
   const [comments, setComments] = useState<Comment[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [isRegistered, setIsRegistered] = useState(false)
+
+  const fetchData = async () => {
+    try {
+      const [eventData, commentsData] = await Promise.all([
+        api.getEvent(id),
+        api.getEventComments(id).catch(() => []),
+      ])
+      setEvent(normalizeEvent(eventData))
+      setComments(commentsData.map((c: any) => ({
+        ...c,
+        userId: c.authorId,
+        userName: c.author?.name || "Usuário",
+        userAvatar: c.author?.avatarUrl || "/placeholder.svg",
+        timestamp: c.createdAt,
+        isAdmin: c.author?.role === "ADMIN",
+      })))
+
+      // Verificar se o usuário está inscrito
+      if (user) {
+        try {
+          const myRegistrations = await api.getMyRegistrations()
+          setIsRegistered(myRegistrations.some((reg: any) => reg.event?.id === id || reg.eventId === id))
+        } catch (error) {
+          console.error("Error checking registration:", error)
+          setIsRegistered(false)
+        }
+      } else {
+        setIsRegistered(false)
+      }
+    } catch (error) {
+      console.error("Error fetching event:", error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [eventData, commentsData] = await Promise.all([
-          api.getEvent(id),
-          api.getEventComments(id).catch(() => []),
-        ])
-        setEvent(normalizeEvent(eventData))
-        setComments(commentsData.map((c: any) => ({
-          ...c,
-          userId: c.authorId,
-          userName: c.author?.name || "Usuário",
-          userAvatar: c.author?.avatarUrl || "/placeholder.svg",
-          timestamp: c.createdAt,
-          isAdmin: c.author?.role === "ADMIN",
-        })))
-      } catch (error) {
-        console.error("Error fetching event:", error)
-      } finally {
-        setIsLoading(false)
-      }
-    }
     fetchData()
-  }, [id])
+  }, [id, user])
 
   if (isLoading) {
     return (
@@ -78,5 +93,13 @@ export default function EventDetailPage({
     bio: user.bio || "",
   } : null
 
-  return <EventDetailClient event={event} comments={comments} currentUser={currentUser} />
+  return (
+    <EventDetailClient 
+      event={event} 
+      comments={comments} 
+      currentUser={currentUser}
+      isRegistered={isRegistered}
+      onRegistrationSuccess={fetchData}
+    />
+  )
 }

@@ -11,14 +11,16 @@ import { Textarea } from "@/components/ui/textarea"
 import { useToast } from "@/hooks/use-toast"
 import { Loader2, CheckCircle2 } from "lucide-react"
 import type { Event } from "@/lib/types"
+import { api } from "@/lib/api"
 
 interface EventRegistrationModalProps {
   event: Event
   open: boolean
   onOpenChange: (open: boolean) => void
+  onRegistrationSuccess?: () => void
 }
 
-export function EventRegistrationModal({ event, open, onOpenChange }: EventRegistrationModalProps) {
+export function EventRegistrationModal({ event, open, onOpenChange, onRegistrationSuccess }: EventRegistrationModalProps) {
   const { toast } = useToast()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
@@ -33,26 +35,48 @@ export function EventRegistrationModal({ event, open, onOpenChange }: EventRegis
     e.preventDefault()
     setIsSubmitting(true)
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+    try {
+      // Preparar informações adicionais
+      const additionalInfo: Record<string, any> = {}
+      if (phone) additionalInfo.telefone = phone
+      if (message) additionalInfo.observacoes = message
+      if (fullName) additionalInfo.nomeCompleto = fullName
+      if (email) additionalInfo.email = email
 
-    setIsSubmitting(false)
-    setIsSuccess(true)
+      await api.registerToEvent(event.id, {
+        additionalInfo: Object.keys(additionalInfo).length > 0 ? additionalInfo : undefined,
+      })
 
-    toast({
-      title: "Inscrição confirmada!",
-      description: `Você foi inscrito no evento "${event.title}"`,
-    })
+      setIsSubmitting(false)
+      setIsSuccess(true)
 
-    // Reset form after 2 seconds and close
-    setTimeout(() => {
-      setIsSuccess(false)
-      setFullName("")
-      setEmail("")
-      setPhone("")
-      setMessage("")
-      onOpenChange(false)
-    }, 2000)
+      toast({
+        title: "Inscrição confirmada!",
+        description: `Você foi inscrito no evento "${event.title}"`,
+      })
+
+      // Chamar callback para atualizar dados do evento
+      if (onRegistrationSuccess) {
+        onRegistrationSuccess()
+      }
+
+      // Reset form after 2 seconds and close
+      setTimeout(() => {
+        setIsSuccess(false)
+        setFullName("")
+        setEmail("")
+        setPhone("")
+        setMessage("")
+        onOpenChange(false)
+      }, 2000)
+    } catch (error: any) {
+      setIsSubmitting(false)
+      toast({
+        title: "Erro na inscrição",
+        description: error.message || "Não foi possível realizar a inscrição. Tente novamente.",
+        variant: "destructive",
+      })
+    }
   }
 
   const handleClose = () => {

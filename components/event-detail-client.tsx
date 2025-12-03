@@ -33,10 +33,12 @@ const categoryColors = {
 interface EventDetailClientProps {
   event: Event
   comments: Comment[]
-  currentUser: User
+  currentUser: User | null
+  isRegistered?: boolean
+  onRegistrationSuccess?: () => void
 }
 
-export function EventDetailClient({ event, comments, currentUser }: EventDetailClientProps) {
+export function EventDetailClient({ event, comments, currentUser, isRegistered = false, onRegistrationSuccess }: EventDetailClientProps) {
   const { toast } = useToast()
   const { user } = useAuth()
   const [showRegistrationModal, setShowRegistrationModal] = useState(false)
@@ -209,14 +211,24 @@ export function EventDetailClient({ event, comments, currentUser }: EventDetailC
                     )}
                   </div>
 
-                  <Button
-                    className="w-full h-11 font-semibold uppercase tracking-wide border-0 hover:bg-primary/90 transition-all duration-300 rounded-xs"
-                    size="lg"
-                    onClick={handleRegister}
-                    disabled={isPast || spotsLeft === 0}
-                  >
-                    {isPast ? "Evento encerrado" : spotsLeft === 0 ? "Evento lotado" : "Inscrever-se"}
-                  </Button>
+                  {isRegistered ? (
+                    <Button
+                      className="w-full h-11 font-semibold uppercase tracking-wide border-2 border-primary bg-transparent text-primary hover:bg-primary/10 transition-all duration-300 rounded-xs"
+                      size="lg"
+                      disabled
+                    >
+                      ✓ Inscrito
+                    </Button>
+                  ) : (
+                    <Button
+                      className="w-full h-11 font-semibold uppercase tracking-wide border-0 hover:bg-primary/90 transition-all duration-300 rounded-xs"
+                      size="lg"
+                      onClick={handleRegister}
+                      disabled={isPast || spotsLeft === 0 || !user}
+                    >
+                      {!user ? "Faça login para se inscrever" : isPast ? "Evento encerrado" : spotsLeft === 0 ? "Evento lotado" : "Inscrever-se"}
+                    </Button>
+                  )}
                 </CardContent>
               </Card>
             </div>
@@ -225,7 +237,12 @@ export function EventDetailClient({ event, comments, currentUser }: EventDetailC
       </div>
 
       {/* Event Registration Modal */}
-      <EventRegistrationModal event={event} open={showRegistrationModal} onOpenChange={setShowRegistrationModal} />
+      <EventRegistrationModal 
+        event={event} 
+        open={showRegistrationModal} 
+        onOpenChange={setShowRegistrationModal}
+        onRegistrationSuccess={onRegistrationSuccess}
+      />
 
       <Footer />
     </div>
