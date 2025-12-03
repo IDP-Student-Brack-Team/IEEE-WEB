@@ -40,11 +40,14 @@ export default function EventsPage() {
     const fetchEvents = async () => {
       try {
         const data = await api.getEvents({ status: "PUBLISHED" })
-        const eventsArray = Array.isArray(data) ? data : (data.events || [])
+        const eventsArray = Array.isArray(data) 
+          ? data 
+          : (data?.data || data?.events || [])
         const normalized = eventsArray.map(normalizeEvent)
         setEvents(normalized)
       } catch (error) {
         console.error("Error fetching events:", error)
+        setEvents([]) 
       } finally {
         setIsLoading(false)
       }
@@ -59,8 +62,8 @@ export default function EventsPage() {
         event.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
         event.location.toLowerCase().includes(searchQuery.toLowerCase())
 
-      const eventDate = new Date(event.date)
-      const isPast = eventDate < new Date()
+      const eventDate = event.date ? new Date(event.date) : null
+      const isPast = eventDate ? eventDate < new Date() : false
 
       const matchesDateFilter =
         dateFilter === "all" || (dateFilter === "upcoming" && !isPast) || (dateFilter === "past" && isPast)
@@ -70,8 +73,8 @@ export default function EventsPage() {
       // Date range filter
       const matchesDateRange =
         (!dateRange.from && !dateRange.to) ||
-        (dateRange.from && dateRange.to && eventDate >= dateRange.from && eventDate <= dateRange.to) ||
-        (dateRange.from && !dateRange.to && eventDate >= dateRange.from)
+        (dateRange.from && dateRange.to && eventDate && eventDate >= dateRange.from && eventDate <= dateRange.to) ||
+        (dateRange.from && !dateRange.to && eventDate && eventDate >= dateRange.from)
 
       return matchesSearch && matchesDateFilter && matchesCategory && matchesDateRange
     })

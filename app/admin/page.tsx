@@ -48,7 +48,10 @@ export default function AdminDashboard() {
       if (!user?.isAdmin) return
       try {
         const eventsData = await api.getEvents()
-        const eventsArray = Array.isArray(eventsData) ? eventsData : (eventsData.events || [])
+        // A API retorna { data: [...], meta: {...} }
+        const eventsArray = Array.isArray(eventsData) 
+          ? eventsData 
+          : (eventsData?.data || eventsData?.events || [])
         const normalized = eventsArray.map(normalizeEvent)
         setEvents(normalized)
       } catch (error) {
